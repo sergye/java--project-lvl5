@@ -1,1 +1,1 @@
-web: ./build/install/app/bin/app
+web: -Dserver.port=$PORT  ./build/install/app/bin/app
