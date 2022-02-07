@@ -1,0 +1,33 @@
+plugins {
+	id 'org.springframework.boot' version '2.6.3'
+	id 'io.spring.dependency-management' version '1.0.11.RELEASE'
+	id 'java'
+	id 'war'
+	id 'application'
+}
+
+group = 'hexlet.code'
+version = '1.0-SNAPSHOT'
+sourceCompatibility = '17'
+
+repositories {
+	mavenCentral()
+}
+
+dependencies {
+	implementation 'org.springframework.boot:spring-boot-starter-web'
+	providedRuntime 'org.springframework.boot:spring-boot-starter-tomcat'
+	testImplementation 'org.springframework.boot:spring-boot-starter-test'
+	annotationProcessor 'org.projectlombok:lombok'
+}
+
+application {
+	mainClass = 'hexlet.code.app.AppApplication'
+}
+
+tasks.named('test') {
+	useJUnitPlatform()
+}
+
+task stage(dependsOn: ['installDist', 'clean'])
+installDist.mustRunAfter clean
