@@ -6,6 +6,7 @@ plugins {
 	id 'application'
 	id 'checkstyle'
 	id 'jacoco'
+	id 'org.liquibase.gradle' version '2.1.1'
 }
 
 group = 'hexlet.code'
@@ -17,14 +18,51 @@ repositories {
 }
 
 dependencies {
-	implementation 'org.springframework.boot:spring-boot-starter-web'
-	providedRuntime 'org.springframework.boot:spring-boot-starter-tomcat'
-	testImplementation 'org.springframework.boot:spring-boot-starter-test'
+	compileOnly 'org.projectlombok:lombok'
+
+	implementation (
+			'org.springframework.boot:spring-boot-starter-web',
+			'org.springframework.boot:spring-boot-starter-data-jpa:2.6.2',
+			'org.springframework.boot:spring-boot-starter-validation'
+	)
+
 	annotationProcessor 'org.projectlombok:lombok'
+
+	runtimeOnly (
+			'org.postgresql:postgresql',
+			'com.h2database:h2'
+	)
+
+	liquibaseRuntime (
+			sourceSets.main.output,
+			'org.liquibase:liquibase-core:4.6.2',
+			'org.liquibase.ext:liquibase-hibernate5:4.6.2',
+			'org.springframework.boot:spring-boot-starter-data-jpa'
+	)
+
+	testImplementation 'org.springframework.boot:spring-boot-starter-test'
 }
 
 application {
 	mainClass = 'hexlet.code.app.AppApplication'
+}
+
+diffChangeLog {
+	dependsOn compileJava
+}
+
+liquibase {
+	activities {
+		main {
+			changeLogFile 'src/main/resources/db/changelog/changelog-master.xml'
+			url 'jdbc:h2:./taskmgr'
+			username ''
+			password ''
+			referenceUrl 'hibernate:spring:hexlet.code.app.model' +
+					'?dialect=org.hibernate.dialect.H2Dialect' +
+					'&hibernate.physical_naming_strategy=org.springframework.boot.orm.jpa.hibernate.SpringPhysicalNamingStrategy'
+		}
+	}
 }
 
 tasks.named('test') {
