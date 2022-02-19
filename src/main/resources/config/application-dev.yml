@@ -10,3 +10,6 @@ spring:
       path: /h2console/
       settings:
         web-allow-others: true
+
+  jpa:
+    show-sql: true
