@@ -36,3 +36,16 @@ out/
 
 ### VS Code ###
 .vscode/
+
+### Frontend ###
+frontend/build
+/node
+/node_modules
+/.pnp
+.pnp.js
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+*.db
+.env
